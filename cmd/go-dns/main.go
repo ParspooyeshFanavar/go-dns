@@ -8,7 +8,7 @@ import (
 	"github.com/ParspooyeshFanavar/go-dns/iohandlers"
 	"github.com/ParspooyeshFanavar/go-dns/parser"
 	"github.com/pkg/profile"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -167,6 +167,6 @@ func main() {
 	app.Action = cli.ShowAppHelp
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		zap.L().Sugar().Fatal(err)
 	}
 }

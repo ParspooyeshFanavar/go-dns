@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 type Statistics struct {
@@ -20,7 +20,7 @@ type Statistics struct {
 func (s Statistics) ToJson() {
 	jsonData, err := json.Marshal(&s)
 	if err != nil {
-		log.Warnf("Error converting to JSON: %v", err)
+		zap.L().Sugar().Warnf("Error converting to JSON: %v", err)
 	}
 	fmt.Printf("%s\n", jsonData)
 }

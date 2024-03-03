@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/hamba/avro/ocf"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 func init() {
@@ -183,7 +183,7 @@ func toAvroInitializer() {
 	var err error
 	avroEncoder, err = ocf.NewEncoder(avroSchema, os.Stdout, ocf.WithCodec(ocf.Snappy))
 	if err != nil {
-		log.Fatalf("Error creating Avro Encoder: %v", err)
+		zap.L().Sugar().Fatalf("Error creating Avro Encoder: %v", err)
 	}
 }
 
@@ -244,7 +244,7 @@ func toAvro(d *DnsSchema) {
 
 	err := avroEncoder.Encode(&avroData)
 	if err != nil {
-		log.Warnf("Error encoding Avro: %v", err)
+		zap.L().Sugar().Warnf("Error encoding Avro: %v", err)
 	}
 }
 

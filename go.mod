@@ -8,7 +8,7 @@ require (
 	github.com/hamba/avro v1.8.0
 	github.com/miekg/dns v1.1.58
 	github.com/pkg/profile v1.7.0
-	github.com/sirupsen/logrus v1.9.3
+	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/urfave/cli.v1 v1.20.0
 )

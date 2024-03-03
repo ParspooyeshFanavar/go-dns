@@ -12,7 +12,7 @@ import (
 	"github.com/ParspooyeshFanavar/gopacket/layers"
 	"github.com/ParspooyeshFanavar/gopacket/pcap"
 	"github.com/miekg/dns"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 var (
@@ -37,7 +37,7 @@ func ParseFile(fname string) {
 	}
 
 	if err != nil {
-		log.Fatal(err)
+		zap.L().Sugar().Fatal(err)
 	}
 	defer handle.Close()
 
@@ -48,7 +48,7 @@ func ParseFile(fname string) {
 	}
 	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
-		log.Warnf("Could not set BPF filter: %v\n", err)
+		zap.L().Sugar().Warnf("Could not set BPF filter: %v\n", err)
 	}
 
 	ParseDns(handle)
@@ -57,7 +57,7 @@ func ParseFile(fname string) {
 func ParseDevice(device string, snapshotLen int32, promiscuous bool, timeout time.Duration) {
 	handle, err := pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
 	if err != nil {
-		log.Fatal(err)
+		zap.L().Sugar().Fatal(err)
 	}
 	defer handle.Close()
 
@@ -68,7 +68,7 @@ func ParseDevice(device string, snapshotLen int32, promiscuous bool, timeout tim
 	}
 	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
-		log.Warnf("Could not set BPF filter: %v\n", err)
+		zap.L().Sugar().Warnf("Could not set BPF filter: %v\n", err)
 	}
 
 	ParseDns(handle)
@@ -106,7 +106,7 @@ PACKETLOOP:
 		stats.PacketTotal += 1
 
 		if err != nil {
-			log.Errorf("Error decoding some part of the packet: %v\n", err)
+			zap.L().Sugar().Errorf("Error decoding some part of the packet: %v\n", err)
 			stats.PacketErrors += 1
 			continue
 		}
@@ -114,7 +114,7 @@ PACKETLOOP:
 		// Parse network layer information
 		networkLayer := packet.NetworkLayer()
 		if networkLayer == nil {
-			log.Error("Unknown/missing network layer for packet")
+			zap.L().Sugar().Error("Unknown/missing network layer for packet")
 			stats.PacketErrors += 1
 			continue
 		}
@@ -137,7 +137,7 @@ PACKETLOOP:
 		msg = nil
 		transportLayer := packet.TransportLayer()
 		if transportLayer == nil {
-			log.Error("Unknown/missing transport layer for packet")
+			zap.L().Sugar().Error("Unknown/missing transport layer for packet")
 			stats.PacketErrors += 1
 			continue
 		}
@@ -152,7 +152,7 @@ PACKETLOOP:
 
 			msg = new(dns.Msg)
 			if err := msg.Unpack(tcp.Payload); err != nil {
-				log.Errorf("Could not decode DNS: %v\n", err)
+				zap.L().Sugar().Errorf("Could not decode DNS: %v\n", err)
 				stats.PacketErrors += 1
 				continue PACKETLOOP
 			}
@@ -168,7 +168,7 @@ PACKETLOOP:
 
 			msg = new(dns.Msg)
 			if err := msg.Unpack(udp.Payload); err != nil {
-				log.Errorf("Could not decode DNS: %v\n", err)
+				zap.L().Sugar().Errorf("Could not decode DNS: %v\n", err)
 				stats.PacketErrors += 1
 				continue PACKETLOOP
 			}
@@ -181,7 +181,7 @@ PACKETLOOP:
 			// Hash and salt packet for grouping related records
 			tsSalt, err := packet.Metadata().Timestamp.MarshalBinary()
 			if err != nil {
-				log.Errorf("Could not marshal timestamp: #{err}\n")
+				zap.L().Sugar().Errorf("Could not marshal timestamp: #{err}\n")
 			}
 			schema.Sha256 = fmt.Sprintf("%x", sha256.Sum256(append(tsSalt, packet.Data()...)))
 		}
@@ -189,7 +189,7 @@ PACKETLOOP:
 		// This means we did not attempt to parse a DNS payload and
 		// indicates an unexpected transport layer protocol
 		if msg == nil {
-			log.Debug("Unexpected transport layer protocol")
+			zap.L().Sugar().Debug("Unexpected transport layer protocol")
 			continue PACKETLOOP
 		}
 
@@ -274,11 +274,11 @@ PACKETLOOP:
 	// Cleanup IO handler for output format
 	iohandlers.Close(OutputFormat)
 
-	log.Infof("Number of TOTAL packets: %v", stats.PacketTotal)
-	log.Infof("Number of IPv4 packets: %v", stats.PacketIPv4)
-	log.Infof("Number of IPv6 packets: %v", stats.PacketIPv6)
-	log.Infof("Number of UDP packets: %v", stats.PacketUdp)
-	log.Infof("Number of TCP packets: %v", stats.PacketTcp)
-	log.Infof("Number of DNS packets: %v", stats.PacketDns)
-	log.Infof("Number of FAILED packets: %v", stats.PacketErrors)
+	zap.L().Sugar().Infof("Number of TOTAL packets: %v", stats.PacketTotal)
+	zap.L().Sugar().Infof("Number of IPv4 packets: %v", stats.PacketIPv4)
+	zap.L().Sugar().Infof("Number of IPv6 packets: %v", stats.PacketIPv6)
+	zap.L().Sugar().Infof("Number of UDP packets: %v", stats.PacketUdp)
+	zap.L().Sugar().Infof("Number of TCP packets: %v", stats.PacketTcp)
+	zap.L().Sugar().Infof("Number of DNS packets: %v", stats.PacketDns)
+	zap.L().Sugar().Infof("Number of FAILED packets: %v", stats.PacketErrors)
 }
