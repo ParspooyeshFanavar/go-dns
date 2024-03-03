@@ -39,17 +39,17 @@ command:
 ### Binaries
 
 For installation instruction from binaries, please visit the [Releases
-Page](https://github.com/chazlever/rickybobby/releases).
+Page](https://github.com/ParspooyeshFanavar/go-dns/releases).
 
 ### Via Go
 
 You can use the Go tool to download and install the binary for you.
 
-    $ go get github.com/chazlever/rickybobby
+    $ go get github.com/ParspooyeshFanavar/go-dns
   
 Or you can manually clone the repository and build the binaries yourself.
 
-    $ git clone https://github.com/chazlever/rickybobby.git
+    $ git clone https://github.com/ParspooyeshFanavar/go-dns.git
     $ cd rickybobby
     $ go build && go install
 

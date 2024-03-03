@@ -7,10 +7,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/chazlever/rickybobby/iohandlers"
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
-	"github.com/google/gopacket/pcap"
+	"github.com/ParspooyeshFanavar/go-dns/iohandlers"
+	"github.com/ParspooyeshFanavar/gopacket"
+	"github.com/ParspooyeshFanavar/gopacket/layers"
+	"github.com/ParspooyeshFanavar/gopacket/pcap"
 	"github.com/miekg/dns"
 	log "github.com/sirupsen/logrus"
 )

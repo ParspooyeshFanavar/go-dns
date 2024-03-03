@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/chazlever/rickybobby/iohandlers"
-	"github.com/chazlever/rickybobby/parser"
+	"github.com/ParspooyeshFanavar/go-dns/iohandlers"
+	"github.com/ParspooyeshFanavar/go-dns/parser"
 	"github.com/pkg/profile"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
