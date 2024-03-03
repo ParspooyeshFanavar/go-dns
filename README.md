@@ -1,4 +1,4 @@
-# rickybobby
+# go-dns
 
 For parsing DNS packets when you wanna **Go** fast!
 
@@ -45,15 +45,15 @@ Page](https://github.com/ParspooyeshFanavar/go-dns/releases).
 
 You can use the Go tool to download and install the binary for you.
 
-    $ go get github.com/ParspooyeshFanavar/go-dns
+    $ go install github.com/ParspooyeshFanavar/go-dns/cmd/go-dns@latest
   
 Or you can manually clone the repository and build the binaries yourself.
 
     $ git clone https://github.com/ParspooyeshFanavar/go-dns.git
-    $ cd rickybobby
-    $ go build && go install
+    $ cd go-dns
+    $ CGO_ENABLED=1 go build ./cmd/go-dns/
 
-Each of the above methods will install the `rickybobby` binary into
+Each of the above methods will install the `go-dns` binary into
 `$GOPATH/bin`.
 
 ## Usage
@@ -61,12 +61,12 @@ Each of the above methods will install the `rickybobby` binary into
 To view the help documentation for the application, you can simply call the
 application without any arguments.
 
-    $ rickybobby
+    $ go-dns
     NAME:
-       rickybobby - Parsing DNS packets when you wanna GO fast!
+       go-dns - Parsing DNS packets when you wanna GO fast!
     
     USAGE:
-       rickybobby [global options] command [command options] [arguments...]
+       go-dns [global options] command [command options] [arguments...]
     
     VERSION:
        1.0.4
@@ -99,12 +99,12 @@ below.
 To view the help documentation for the `pcap` command, invoke the application
 as follows:
 
-    $ rickybobby pcap -h
+    $ go-dns pcap -h
     NAME:
-       rickybobby pcap - read packets from a PCAP file
+       go-dns pcap - read packets from a PCAP file
     
     USAGE:
-       rickybobby pcap [file...]
+       go-dns pcap [file...]
 
 As shown above, the `pcap` command takes one more more arguments where each
 argument is simply a path to an uncompressed PCAP file. It is also possible to
@@ -113,19 +113,19 @@ parse from STDIN by pass `-` as the filename.
 The following shows an example of how you can parse a compressed PCAP using
 STDIN:
 
-    $ zcat compressed.pcap.gz | rickybobby pcap - 
+    $ zcat compressed.pcap.gz | go-dns pcap - 
 
 ### Parsing Live Interface
 
 To view the help documentation for the `live` command, invoke the applicatijon
 as follows:
 
-    $ rickybobby live -h
+    $ go-dns live -h
     NAME:
-       rickybobby live - read packets from a live interface
+       go-dns live - read packets from a live interface
     
     USAGE:
-       rickybobby live [command options] [interface]
+       go-dns live [command options] [interface]
     
     OPTIONS:
        --snaplen value  set snapshot length for PCAP collection (default: 4096)
@@ -139,4 +139,4 @@ that can be set.
 The following shows an example of how you can parse from `eth0` in promiscuous
 mode.
 
-    $ rickybobby live --promiscuous eth0
+    $ go-dns live --promiscuous eth0
